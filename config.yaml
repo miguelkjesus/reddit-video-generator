@@ -1,8 +1,9 @@
 subreddits:
-  - askreddit
   - trueoffmychest
+  - askreddit
 
 voices:
-  - en_us_007
-  - en_male_funny
-  - en_male_narration
+  - en_us_006
+
+videos:
+  - ./videos/gameplay1.mp4

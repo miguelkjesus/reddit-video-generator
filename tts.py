@@ -92,12 +92,6 @@ def get_api_response() -> requests.Response:
     response = requests.get(url)
     return response
 
-# saving the audio file
-def save_audio_file(base64_data: str, filename: str = "output.mp3") -> None:
-    audio_bytes = base64.b64decode(base64_data)
-    with open(filename, "wb") as file:
-        file.write(audio_bytes)
-
 # send POST request to get the audio data
 def generate_audio(text: str, voice: str) -> bytes:
     url = f'{ENDPOINTS[current_endpoint]}'
@@ -108,7 +102,7 @@ def generate_audio(text: str, voice: str) -> bytes:
 
 
 # creates an text to speech audio file
-def tts(text: str, voice: str = "none", filename: str = "output.mp3", play_sound: bool = False) -> None:
+def tts(text: str, voice: str = None, outpath: str = None) -> bytes:
     # checking if the website is available
     global current_endpoint
 
@@ -118,7 +112,7 @@ def tts(text: str, voice: str = "none", filename: str = "output.mp3", play_sound
             raise Exception("Service not available and probably temporarily rate limited, try again later...")
     
     # checking if arguments are valid
-    if voice == "none":
+    if voice is None:
         raise ValueError("No voice has been selected")
     
     if not voice in VOICES:
@@ -171,9 +165,12 @@ def tts(text: str, voice: str = "none", filename: str = "output.mp3", play_sound
             # Concatenate the base64 data in the correct order
             audio_base64_data = "".join(audio_base64_data)
             
-        save_audio_file(audio_base64_data, filename)
-        if play_sound:
-            playsound(filename)
+        audio_bytes = base64.b64decode(audio_base64_data)
+        if outpath is not None:
+            with open(outpath, "wb") as file:
+                file.write(audio_bytes)
 
+        return audio_bytes
+    
     except Exception as e:
         print("Error occurred while generating audio:", e)

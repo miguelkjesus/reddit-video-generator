@@ -2,3 +2,5 @@ out/
 templates/**/index.html
 __pycache__/
 .venv/
+**TEMP**
+videos/
