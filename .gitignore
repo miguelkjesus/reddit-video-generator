@@ -1,4 +1,4 @@
 out/
-reddit_post_template/index.html
+templates/**/index.html
 __pycache__/
 .venv/
