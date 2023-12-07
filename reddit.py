@@ -40,7 +40,7 @@ async def web_to_image(url: str, path: str = None) -> bytes:
 
 async def post_to_title_image(post: dict, path: str = None) -> bytes | str:
     htmlTemplate = ""
-    with open("./reddit_post_template/template.html") as f:
+    with open("./templates/title/template.html") as f:
         htmlTemplate = f.read()
 
     hours_ago = (datetime.now(timezone.utc).timestamp() - post["created_utc"]) / 60 / 60
@@ -52,7 +52,7 @@ async def post_to_title_image(post: dict, path: str = None) -> bytes | str:
         comments=human_format(post["num_comments"])
     )
 
-    with open("./reddit_post_template/index.html", "w") as f:
+    with open("./templates/title/index.html", "w") as f:
         f.write(html)
 
-    await web_to_image(f"file:///{os.path.abspath('./reddit_post_template/index.html')}", path)
+    await web_to_image(f"file:///{os.path.abspath('./templates/title/index.html')}", path)
