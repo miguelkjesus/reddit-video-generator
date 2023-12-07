@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="post">
+      <div class="post-left">
+        <img src="images/upvote.png" class="upvote" />
+        <span class="upvote-counter">{upvotes}</span>
+        <img src="images/downvote.png" />
+      </div>
+      <div class="post-main">
+        <div class="post-meta">Posted by u/{author} {hours} hours ago</div>
+        <div class="post-title">{title}</div>
+        <div class="post-buttons">
+          <div>
+            <img src="images/comments.png" />
+            <span>{comments} Comments</span>
+          </div>
+          <div>
+            <img src="images/share.png" />
+            <span>Share</span>
+          </div>
+          <div>
+            <img src="images/save.png" />
+            <span>Save</span>
+          </div>
+          <div>
+            <img src="images/dots.png" />
+          </div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
