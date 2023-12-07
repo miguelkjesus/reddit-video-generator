@@ -78,7 +78,7 @@ async def main():
             subscribe_clip = subscribe_clip.set_position(((clip.size[0] - subscribe_clip.size[0]) // 2, padding))
 
             clip = CompositeVideoClip([*clips, subscribe_clip]).subclip(0, min(t, 59))
-            clip.write_videofile(f"{postdir}/video.mp4", fps=5)
+            clip.write_videofile(f"{postdir}/video.mp4", fps=30)
 
 
 if __name__ == "__main__":
