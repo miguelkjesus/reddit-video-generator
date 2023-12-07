@@ -1,11 +1,11 @@
-import requests, os
+import requests, os, re
 from typing import Literal
 from datetime import datetime, timezone
 from math import floor
 from pyppeteer import launch
 
 from utils import human_format
-from fs_utils import read, write
+from fs_utils import read, write, mkdir
 
 def top(subreddit: str, duration: None | Literal["today", "week", "month", "year", "all"] = None) -> dict:
     durationParam = f"/?t={duration}" if duration is not None else ""
@@ -17,10 +17,16 @@ def top(subreddit: str, duration: None | Literal["today", "week", "month", "year
     ).json()
 
 
+def format_template_html(templatedir: str, **formatKwargs: str) -> None:
+    htmlTemplate = read(f"{templatedir}/template.html")
+    html = htmlTemplate.format(**formatKwargs)
+    write(f"{templatedir}/index.html", html)
+
+
 async def web_to_image(url: str, path: str = None) -> bytes | str:
     browser = await launch()
     page = await browser.newPage()
-    await page.goto(url)
+    await page.goto(url, {"waitUntil": ["domcontentloaded", "networkidle0"]})
     width, height = await page.evaluate("() => [document.documentElement.offsetWidth, document.documentElement.offsetHeight]")
 
     options = {
@@ -42,10 +48,9 @@ async def web_to_image(url: str, path: str = None) -> bytes | str:
 
 async def get_title_image(post: dict, path: str = None) -> bytes | str:
     templatedir = "./templates/title"
-    htmlTemplate = read(f"{templatedir}/template.html")
 
     hours_ago = (datetime.now(timezone.utc).timestamp() - post["created_utc"]) / 3600
-    html = htmlTemplate.format(
+    format_template_html(templatedir, 
         author=post["author"], 
         hours=floor(hours_ago), 
         title=post["title"], 
@@ -53,9 +58,10 @@ async def get_title_image(post: dict, path: str = None) -> bytes | str:
         comments=human_format(post["num_comments"])
     )
 
-    write(f"{templatedir}/index.html", html)
     return await web_to_image(f"file:///{os.path.abspath(f'{templatedir}/index.html')}", path)
 
 
-async def get_post_image(post: dict, path: str = None) -> bytes | str:
-    pass
+async def get_text_image(text: str, path: str = None) -> bytes | str:
+    templatedir = "./templates/text"
+    format_template_html(templatedir, text=text)
+    return await web_to_image(f"file:///{os.path.abspath(f'{templatedir}/index.html')}", path)

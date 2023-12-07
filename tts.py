@@ -68,8 +68,7 @@ TEXT_BYTE_LIMIT = 300
 
 # create a list by splitting a string, every element has n chars
 def split_string(string: str, chunk_size: int) -> list[str]:
-    sentences = re.split(r"(?<=\w\.) |\n+", string)
-    print(sentences)
+    sentences = re.split(r"(?<=\w[\.,]) |\n+", string)
     result = []
     current_chunk = ''
     for i, sentence in enumerate(sentences):
