@@ -1,6 +1,6 @@
 import asyncio, reddit, yaml, random
 from tts import tts
-from utils import mkdir
+from fs_utils import mkdir
 
 def get_config():
     with open("./config.yaml", "r") as f:
@@ -8,8 +8,8 @@ def get_config():
 
 async def main():
     config = get_config()
+    
     outdir = mkdir("./out")
-
     for subreddit in config["subreddits"]:
         subdir = mkdir(f"{outdir}/{subreddit}")
 
@@ -18,8 +18,9 @@ async def main():
             voice = random.choice(config["voices"])
 
             tts(post["title"], voice, f"{postdir}/title.mp3")
-            await reddit.post_to_title_image(post, f"{postdir}/title.png")
+            await reddit.get_title_image(post, f"{postdir}/title.png")
 
 
 if __name__ == "__main__":
     asyncio.run(main())
+    

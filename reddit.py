@@ -1,9 +1,11 @@
 import requests, os
 from typing import Literal
-from utils import human_format
 from datetime import datetime, timezone
 from math import floor
 from pyppeteer import launch
+
+from utils import human_format
+from fs_utils import read, write
 
 def top(subreddit: str, duration: None | Literal["today", "week", "month", "year", "all"] = None) -> dict:
     durationParam = f"/?t={duration}" if duration is not None else ""
@@ -15,7 +17,7 @@ def top(subreddit: str, duration: None | Literal["today", "week", "month", "year
     ).json()
 
 
-async def web_to_image(url: str, path: str = None) -> bytes:
+async def web_to_image(url: str, path: str = None) -> bytes | str:
     browser = await launch()
     page = await browser.newPage()
     await page.goto(url)
@@ -38,12 +40,11 @@ async def web_to_image(url: str, path: str = None) -> bytes:
     return img
 
 
-async def post_to_title_image(post: dict, path: str = None) -> bytes | str:
-    htmlTemplate = ""
-    with open("./templates/title/template.html") as f:
-        htmlTemplate = f.read()
+async def get_title_image(post: dict, path: str = None) -> bytes | str:
+    templatedir = "./templates/title"
+    htmlTemplate = read(f"{templatedir}/template.html")
 
-    hours_ago = (datetime.now(timezone.utc).timestamp() - post["created_utc"]) / 60 / 60
+    hours_ago = (datetime.now(timezone.utc).timestamp() - post["created_utc"]) / 3600
     html = htmlTemplate.format(
         author=post["author"], 
         hours=floor(hours_ago), 
@@ -52,7 +53,9 @@ async def post_to_title_image(post: dict, path: str = None) -> bytes | str:
         comments=human_format(post["num_comments"])
     )
 
-    with open("./templates/title/index.html", "w") as f:
-        f.write(html)
+    write(f"{templatedir}/index.html", html)
+    return await web_to_image(f"file:///{os.path.abspath(f'{templatedir}/index.html')}", path)
 
-    await web_to_image(f"file:///{os.path.abspath('./templates/title/index.html')}", path)
+
+async def get_post_image(post: dict, path: str = None) -> bytes | str:
+    pass
