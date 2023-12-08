@@ -16,9 +16,9 @@ body {
 }
 
 .text {
-  width: 320px;
-  padding: 16px;
-  font-size: 14px;
+  width: 640px;
+  padding: 32px;
+  font-size: 18px;
   background-color: rgb(24, 24, 25);
   overflow: hidden;
 }
