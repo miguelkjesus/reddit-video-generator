@@ -5,7 +5,7 @@ from math import floor
 from pyppeteer import launch
 
 from utils import human_format
-from fs_utils import read, write, mkdir
+from fs_utils import read, write
 
 def top(subreddit: str, duration: None | Literal["today", "week", "month", "year", "all"] = None) -> dict:
     durationParam = f"/?t={duration}" if duration is not None else ""

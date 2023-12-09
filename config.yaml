@@ -1,9 +1,40 @@
+# Which subreddits to take posts from
 subreddits:
   - trueoffmychest
-  - askreddit
 
+# The maximum posts to make a video of from each subreddit
+max-posts: 5 # Must be <=25 since the reddit api only fetches max 25 top posts anyway
+
+# Long videos will be clipped to this length. 59 is reccomended as this is the max youtube shorts length
+max-video-length: 59
+
+# The TTS voices to use (a full list can be found in tts.py)
 voices:
-  - en_us_006
+  # - en_au_001 # English AU - Female
+  # - en_au_002 # English AU - Male
+  # - en_uk_001 # English UK - Male 1
+  # - en_uk_003 # English UK - Male 2
+  - en_us_001 # English US - Female (Int. 1)
+  - en_us_002 # English US - Female (Int. 2)
+  - en_us_006 # English US - Male 1
+  - en_us_007 # English US - Male 2
+  - en_us_009 # English US - Male 3
+  - en_us_010 # English US - Male 4
 
+# The background videos to use
 videos:
   - ./videos/gameplay1.mp4
+
+# The path to put output files in
+outPath: ./out
+
+# Options for automatic video uploading
+automatic-upload:
+  # If enabled, the program will upload the video automatically for you
+  # given you have a client_secrets.json file.
+  # You may want to disable this as youtube sometimes privates
+  # videos uploaded through the API.
+  enabled: false
+
+  # What the visibility of the uploaded video should be
+  visibility: unlisted # public / private / unlisted
