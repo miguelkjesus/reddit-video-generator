@@ -3,6 +3,6 @@ templates/**/index.html
 __pycache__/
 .venv/
 **TEMP**
-videos/
+videos/gameplay**.mp4
 client_secrets.json
 oauth.json
