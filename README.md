@@ -5,7 +5,9 @@
 1. Clone this repository
 2. In a powershell terminal, enter the cloned directory and execute the following:
 
-   `pip install -r REQUIREMENTS.txt`
+   ```powershell
+   pip install -r REQUIREMENTS.txt
+   ```
 
 3. Add the paths of your background videos to the `videos` option in `config.yaml`. You can place these videos in the `videos` directory if you like.
 
