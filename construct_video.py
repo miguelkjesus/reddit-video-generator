@@ -12,7 +12,7 @@ def set_aspect_ratio(clip, aspect_ratio: tuple[int, int]):
     return crop(clip, width=target_width, height=h, x_center=w//2, y_center=h//2)
 
 
-async def construct_video(post: dict, voice: str, bgVideoPath: str, outFolderPath: str) -> None:
+async def construct_video(post: dict, voice: str, bgVideoPath: str, maxVideoLength: float, outFolderPath: str) -> None:
     mp3Paths = []
     pngPaths = []
 
@@ -44,13 +44,14 @@ async def construct_video(post: dict, voice: str, bgVideoPath: str, outFolderPat
         bgVideoPath=bgVideoPath,
         mp3Paths=mp3Paths,
         pngPaths=pngPaths,
-        outPath=videoPath
+        outPath=videoPath,
+        maxVideoLength=maxVideoLength
     )
 
     return videoPath
 
 
-def build_video(bgVideoPath: str, outPath: str, mp3Paths: list[str], pngPaths: list[str], maxLength: float) -> None:
+def build_video(bgVideoPath: str, outPath: str, mp3Paths: list[str], pngPaths: list[str], maxVideoLength: float) -> None:
     clip = VideoFileClip(bgVideoPath)
     clip = set_aspect_ratio(clip, (9, 16))
 
@@ -76,5 +77,5 @@ def build_video(bgVideoPath: str, outPath: str, mp3Paths: list[str], pngPaths: l
                         .set_start(5))
     subscribe_clip = subscribe_clip.set_position(((clip.size[0] - subscribe_clip.size[0]) // 2, 50))
 
-    clip = CompositeVideoClip([*clips, subscribe_clip]).subclip(0, min(t, maxLength))
+    clip = CompositeVideoClip([*clips, subscribe_clip]).subclip(0, min(t, maxVideoLength))
     clip.write_videofile(outPath)

@@ -40,10 +40,10 @@ async def main():
             # generate video
             videoPath = await construct_video(
                 post, 
-                postdir,
                 random.choice(config["voices"]),
                 random.choice(config["videos"]),
-                config["max-video-length"]
+                config["max-video-length"],
+                postdir
             )
 
             # upload video if wanted
