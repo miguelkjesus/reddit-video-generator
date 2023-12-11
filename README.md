@@ -18,4 +18,6 @@
 
 1. In a powershell terminal, enter the cloned directory and execute the following:
 
-   `py main.py`
+   ```powershell
+   py main.py
+   ```
